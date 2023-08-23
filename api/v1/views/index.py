@@ -18,7 +18,8 @@ def count_stats():
     from models.state import State
     from models.user import User
     from models import storage
-    classes = {"amenities": Amenity, "cities": City, "places": Place, "reviews": Review, "states": State, "users": User}
+    classes = {"amenities": Amenity, "cities": City, "places": Place,
+               "reviews": Review, "states": State, "users": User}
     r_dict = {}
     for i in classes:
         r_dict["{}".format(i)] = storage.count(classes[i])
