@@ -9,7 +9,7 @@ app.register_blueprint(app_views)
 
 
 @app.errorhandler(404)
-def error_handler():
+def error_handler(error):
     return jsonify({"error": "Not found"})
 
 
