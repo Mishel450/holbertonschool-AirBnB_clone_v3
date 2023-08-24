@@ -43,22 +43,20 @@ def delete_city(city_id):
 def post_city(state_id):
     """search and create a state"""
     from models.state import State
+    data = request.get_json()
     checks = storage.get(State, state_id)
     if checks is None:
         return abort(404)
-    if not request.get_json():
+    if not data:
         error_m = 'Not a JSON'
         return jsonify(error_m), 400
-    data = request.get_json()
     if 'name' not in data:
         error_m = ' Missing name'
         return jsonify(error_m), 400
-    else:
-        data['state_id'] = checks.id
-        obj = City(**data)
-        storage.new(obj)
-        storage.save()
-        return jsonify(obj.to_dict()), 201
+    data['state_id'] = checks.id
+    obj = City(**data)
+    obj.save()
+    return jsonify(obj.to_dict()), 201
     
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
