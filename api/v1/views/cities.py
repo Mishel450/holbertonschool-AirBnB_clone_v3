@@ -49,7 +49,7 @@ def post_city(state_id):
     if not request.get_json():
         error_m = 'Not a JSON'
         return jsonify(error_m), 400
-    data = request.get_json():
+    data = request.get_json()
     if 'name' not in data:
         error_m = ' Missing name'
         return jsonify(error_m), 400
