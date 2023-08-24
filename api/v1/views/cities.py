@@ -42,8 +42,7 @@ def delete_city(city_id):
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def post_city(state_id):
     """search and create a state"""
-    from models.state import State
-    checks = storage.get(State, state_id)
+    checks = storage.get('State', state_id)
     if checks is None:
         return abort(404)
     if not request.get_json():
