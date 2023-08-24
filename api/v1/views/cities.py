@@ -56,7 +56,8 @@ def post_city(state_id):
     else:
         data['state_id'] = checks.id
         obj = City(**data)
-        obj.save()
+        storage.new(obj)
+        storage.save()
         return jsonify(obj.to_dict()), 201
     
 
