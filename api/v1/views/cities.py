@@ -2,7 +2,7 @@
 """task-8"""
 from models import storage
 from models.city import City
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from api.v1.views import app_views
 
 
@@ -43,22 +43,18 @@ def delete_city(city_id):
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def post_city(state_id):
     """search and create a state"""
-    from models.state import State
-    checks = storage.get(State, state_id)
-    if checks is None:
-        return abort(404)
+    state = storage.get("State", state_id)
+    if state is None:
+        abort(404)
     if not request.get_json():
-        error_m = 'Not a JSON'
-        return jsonify(error_m), 400
-    data = request.get_json()
-    if 'name' not in data:
-        error_m = ' Missing name'
-        return jsonify(error_m), 400
-    else:
-        data['state_id'] = state_id
-        obj = City(**data)
-        obj.save()
-        return jsonify(obj.to_dict()), 201
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    if 'name' not in request.get_json():
+        return make_response(jsonify({'error': 'Missing name'}), 400)
+    kwargs = request.get_json()
+    kwargs['state_id'] = state_id
+    city = City(**kwargs)
+    city.save()
+    return make_response(jsonify(city.to_dict()), 201)
     
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
