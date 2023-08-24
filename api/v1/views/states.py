@@ -25,13 +25,13 @@ def states_to_dic(state_id=None):
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
     """it deletes from objects"""
-    for i in storage.all(State):
-        split_key = i.split(".")
-        if state_id == split_key[1]:
-            del storage.all(State)[i]
-            storage.save()
-            return jsonify({}), 200
-    return abort(404)
+    i = storage.get(State, state_id)
+    if i is not None:
+        del storage.all(State)[i]
+        storage.save()
+        return jsonify({}), 200
+    else:
+        return abort(404)
 
 
 @app_views.route('/states/', methods=['POST'])
@@ -65,4 +65,4 @@ def put_state(state_id):
         else:
             obj.name = data['name']
             obj.save()
-            return jsonify(obj.to_dict()), 201
+            return jsonify(obj.to_dict()), 200
