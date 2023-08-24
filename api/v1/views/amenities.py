@@ -23,7 +23,7 @@ def amenity_to_dic(amenity_id=None):
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
-def delete_state(amenity_id):
+def delete_amenity(amenity_id):
     """it deletes from objects"""
     fetched_obj = storage.get(Amenity, amenity_id)
     if fetched_obj is None:
@@ -35,7 +35,7 @@ def delete_state(amenity_id):
 
 @app_views.route('/amenities',
                  methods=['POST'], strict_slashes=False)
-def post_city():
+def post_amenity():
     """search and create a state"""
     from models.state import State
     data = request.get_json()
@@ -51,7 +51,7 @@ def post_city():
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'])
-def put_state(amenity_id):
+def put_amenity(amenity_id):
     """puts the diccionary in the test"""
     data = request.get_json()
     if not data:
