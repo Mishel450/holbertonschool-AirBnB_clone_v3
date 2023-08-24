@@ -53,9 +53,8 @@ def post_city(state_id):
         error_m = ' Missing name'
         return jsonify(error_m), 400
     else:
-        obj = City()
-        obj.name = data['name']
-        obj.state_id = state_id
+        data['state_id'] = state_id
+        obj = City(**data)
         obj.save()
         return jsonify(obj.to_dict()), 201
     
