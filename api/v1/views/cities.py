@@ -26,7 +26,7 @@ def gets_city(city_id):
         return abort(404)
     else:
         return jsonify(city.to_dict())
-    
+
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def delete_city(city_id):
@@ -39,7 +39,8 @@ def delete_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities',
+                 methods=['POST'], strict_slashes=False)
 def post_city(state_id):
     """search and create a state"""
     from models.state import State
@@ -57,7 +58,7 @@ def post_city(state_id):
     obj = City(**data)
     obj.save()
     return jsonify(obj.to_dict()), 201
-    
+
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def put_city(city_id):
