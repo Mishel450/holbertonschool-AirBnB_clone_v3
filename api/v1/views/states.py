@@ -13,7 +13,7 @@ def states_to_dic(state_id=None):
     lista = []
     for i in storage.all(State):
         lista.append(storage.all(State)[i].to_dict())
-    if state_id == None:
+    if state_id is None:
         return jsonify(lista)
     else:
         for i in lista:
@@ -25,8 +25,8 @@ def states_to_dic(state_id=None):
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
     """it deletes from objects"""
-    i = storage.get(State, state_id)
-    if i is not None:
+    i = "State" + "." + state_id
+    if i in storage.all(State):
         del storage.all(State)[i]
         storage.save()
         return jsonify({}), 200
@@ -49,7 +49,7 @@ def post_state():
         obj.name = data['name']
         obj.save()
         return jsonify(obj.to_dict()), 201
-    
+
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
 def put_state(state_id):
