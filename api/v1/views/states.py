@@ -25,9 +25,10 @@ def states_to_dic(state_id=None):
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
     """it deletes from objects"""
-    i = storage.get(State, state_id)
-    if i is not None:
-        del storage.all(State)[i]
+    i = "State" + "." + state_id
+    the_dict = storage.all(State).keys()
+    if i in the_dict:
+        del storage[i]
         storage.save()
         return jsonify({}), 200
     else:
