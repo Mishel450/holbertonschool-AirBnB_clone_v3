@@ -7,18 +7,31 @@ from api.v1.views import app_views
 
 
 @app_views.route('/users', methods=['GET'])
-def users_to_dict():
+@app_views.route('/users/<user_id>', methods=['GET'])
+def users_to_dict(user_id=None):
     """ Users to dictionary """
-    list = []
+    lista = []
     for i in storage.all(User):
-        list.append(storage.all(User)[i].to_dict())
-    if obj is None:
-        return jsonify(list)
+        lista.append(storage.all(User)[i].to_dict())
+    if user_id is None:
+        return jsonify(lista)
     else:
-        for i in list:
-            if i['id'] == obj:
+        for i in lista:
+            if i['id'] == user_id:
                 return jsonify(i)
         return abort(404)
+
+
+@app_views.route('/users/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    """ Delete user """
+    obj = storage.get(User, user_id)
+    if obj is None:
+        abort(404)
+    storage.delete(obj)
+    storage.save()
+    return jsonify({}), 200
+
 
 @app_views.route('/users/<user_id>', methods=['POST'])
 def post_user(user_id):
@@ -40,6 +53,7 @@ def post_user(user_id):
         obj.save()
         return jsonify(obj.to_dict()), 201
 
+
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def put_user(user_id):
     """ Put user """
@@ -50,7 +64,7 @@ def put_user(user_id):
     else:
         obj = storage.get(User, user_id)
         if obj is None:
-            abort(404)
+            return abort(404)
         else:
             obj = User()
             obj.save()
