@@ -66,6 +66,10 @@ def put_user(user_id):
         if obj is None:
             return abort(404)
         else:
-            obj.name = data['name']
+            for key, value in data.items():
+                if key == 'first_name':
+                    setattr(obj, key, value)
+                elif key == 'last_name':
+                    setattr(obj, key, value)
             obj.save()
             return jsonify(obj.to_dict()), 200
