@@ -6,10 +6,8 @@ from flask import jsonify, abort, request
 from api.v1.views import app_views
 
 
-@app_views.route('/places', methods=['GET'])
 @app_views.route('/places/<place_id>', methods=['GET'])
-@app_views.route('/cities/<city_id>/places', methods=['GET'])
-def users_to_dict(place_id=None):
+def places_to_dict(place_id=None):
     """ Users to dictionary """
     lista = []
     for i in storage.all(Place):
@@ -23,6 +21,17 @@ def users_to_dict(place_id=None):
         return abort(404)
 
 
+@app_views.route('/cities/<city_id>/places', methods=['GET'])
+def list_places_by_city(city_id):
+    """ List places by city """
+    lista = []
+    for i in storage.all(Place):
+        lista.append(storage.all(Place)[i].to_dict())
+    for i in lista:
+        if i['city_id'] == city_id:
+            return jsonify(i)
+    return abort(404)
+
 @app_views.route('/places/<place_id>', methods=['DELETE'])
 def delete_place(place_id):
     """ Delete user """
@@ -34,8 +43,9 @@ def delete_place(place_id):
     return jsonify({}), 200
 
 
-@app_views.route('/places/', methods=['POST'])
-def post_place():
+@app_views.route('/cities/<city_id>/places', methods=['POST'])
+@app_views.route('/cities/<city_id>/places/', methods=['POST'])
+def post_place(city_id):
     """ Post place """
     data = request.get_json()
     if not data:
