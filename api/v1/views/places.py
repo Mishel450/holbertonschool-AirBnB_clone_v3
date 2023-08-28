@@ -2,6 +2,8 @@
 """task-11"""
 from models import storage
 from models.place import Place
+from models.user import User
+from models.city import City
 from flask import jsonify, abort, request
 from api.v1.views import app_views
 
@@ -31,6 +33,7 @@ def list_places_by_city(city_id):
         if i['city_id'] == city_id:
             return jsonify(i)
     return abort(404)
+
 
 @app_views.route('/places/<place_id>', methods=['DELETE'])
 def delete_place(place_id):
