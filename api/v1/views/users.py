@@ -33,8 +33,8 @@ def delete_user(user_id):
     return jsonify({}), 200
 
 
-@app_views.route('/users/<user_id>', methods=['POST'])
-def post_user(user_id):
+@app_views.route('/users/', methods=['POST'])
+def post_user():
     """ Post user """
     data = request.get_json()
     if not data:
