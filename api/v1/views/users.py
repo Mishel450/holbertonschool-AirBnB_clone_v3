@@ -66,6 +66,6 @@ def put_user(user_id):
         if obj is None:
             return abort(404)
         else:
-            obj = User()
+            obj.name = data['name']
             obj.save()
             return jsonify(obj.to_dict()), 200
